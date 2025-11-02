@@ -10,7 +10,7 @@ import UIKit
 class HomeViewController: UIViewController {
     
     //MARK: - Static Properties
-    private var viewModel: WeatherViewModel? = nil
+    private var viewModel = WeatherViewModel()
     
     //MARK: - Private Properties
     private var weatherDetailsInCell: [WeatherDetailsInCell] = []
@@ -38,18 +38,25 @@ class HomeViewController: UIViewController {
         return collectionView
     }()
     
-    
     //MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUpUI()
-        fetchData()
+        bindViewModel()
+        viewModel.fetchData()
     }
     
-    
-    
     //MARK: - Methods
+    private func bindViewModel() {
+        viewModel.onWeatherDataFetched = { [weak self] weather in
+            if let self = self {
+                self.weatherDetailsInHeader = self.viewModel.weatherDetailsInHeader
+                self.weatherDetailsInCell = self.viewModel.weatherDetailsInCell
+            }
+            self?.detailsCollectionView.reloadData()
+        }
+    }
     
     private func setUpUI() {
         setUpBackground()
@@ -78,51 +85,11 @@ class HomeViewController: UIViewController {
         NSLayoutConstraint.activate([
             detailsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             detailsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            detailsCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            detailsCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+            detailsCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            detailsCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
     
-    
-    private func fetchData() {
-        let url = API.currectWeather
-        NetworkService.shared.getData(baseURL: url) {
-            [weak self] (result: Result<WeatherData, Error>) in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let response):
-                    
-                    self.viewModel = WeatherViewModel(weatherData: response)
-                    
-                    if let viewModel = self.viewModel {
-                        self.weatherDetailsInCell = [
-                            WeatherDetailsInCell(icon: "thermometer.medium", title: "Feels like", description: "\(viewModel.feelsLike)°C"),
-                            WeatherDetailsInCell(icon: "wind", title: "Wind", description: "\(viewModel.windSpeed) m/s, \(viewModel.windDirection)°"),
-                            WeatherDetailsInCell(icon: "humidity", title: "Humidity", description: "\(viewModel.humidity)%"),
-                            WeatherDetailsInCell(icon: "gauge.with.dots.needle.50percent", title: "Pressure", description: "\(viewModel.pressure) hPa"),
-                            WeatherDetailsInCell(icon: "thermometer.low", title: "Today's Low", description: "\(viewModel.tempMin)°C"),
-                            WeatherDetailsInCell(icon: "thermometer.high", title: "Today's High", description: "\(viewModel.tempMax)°C"),
-                            WeatherDetailsInCell(icon: "sunrise", title: "Sunrise", description: "\(viewModel.sunrise)"),
-                            WeatherDetailsInCell(icon: "sunset", title: "Sunset", description: "\(viewModel.sunset)"),
-                        ]
-                        
-                        self.weatherDetailsInHeader = WeatherDetailsInHeader(
-                            icon: "https://openweathermap.org/img/wn/\(viewModel.icon)@2x.png",
-                            //                            city: viewModel.cityName,
-                            city: "\(viewModel.cityName), \(viewModel.countryName)",
-                            temperature: "\(viewModel.realTemperature)°C", description: viewModel.description
-                        )
-                    }
-                    
-                    self.detailsCollectionView.reloadData()
-                    
-                case .failure(let error):
-                    print("დაფიქსირდა შეცდომა: \(error.localizedDescription)")
-                }
-            }
-        }
-    }
 }
 
 

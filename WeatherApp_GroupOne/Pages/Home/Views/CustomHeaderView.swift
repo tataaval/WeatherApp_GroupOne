@@ -65,11 +65,9 @@ class CustomHeaderView: UICollectionReusableView {
     }
     
     func configure(with details: WeatherDetailsInHeader) {
-        
         if let url = URL(string: details.icon) {
             weatherIcon.load(url: url)
         }
-        
         cityLabel.text = details.city
         temperatureLabel.text = "\(details.temperature)"
         weatherDescriptionLabel.text = details.description
