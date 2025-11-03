@@ -12,7 +12,7 @@ struct API {
     private static let lon: Double = 43.1234
     
     static let currectWeather = "\(baseURL)weather?lat=\(lat)&lon=\(lon)&appid=\(apiKey)&units=metric"
-    static let forecast = "\(baseURL)/weather?lat=\(lat)&lon=\(lon)&appid=\(apiKey)&units=metric"
+    static let forecast = "\(baseURL)forecast?lat=\(lat)&lon=\(lon)&appid=\(apiKey)&units=metric"
     
     static func searchForecast(for location: String) -> String {
         "\(baseURL)/weather?q=\(location)&appid=\(apiKey)&units=metric"
