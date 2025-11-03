@@ -16,15 +16,51 @@ class ForecastViewController: UIViewController {
         return tableView
     }()
     
+    private let headerView: UIView = {
+        let headerView = UIView()
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.backgroundColor = .cell.withAlphaComponent(0.3)
+        headerView.clipsToBounds = true
+        headerView.layer.cornerRadius = 12
+        return headerView
+    }()
+    
+    private let headerLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Forecast"
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupHeaderView()
         setupBackgroundImage()
         setupTableView()
         viewModel.fetchData()
         forecastList.register(ForecastCell.self, forCellReuseIdentifier: identifier)
         viewModel.delegate = self
         // Do any additional setup after loading the view.
+    }
+    
+    
+    private func setupHeaderView() {
+        backgroundImage.addSubview(headerView)
+        headerView.addSubview(headerLabel)
+        
+        NSLayoutConstraint.activate([
+            headerView.topAnchor.constraint(equalTo: backgroundImage.topAnchor, constant: 70),
+            headerView.leadingAnchor.constraint(equalTo: backgroundImage.leadingAnchor, constant: 16),
+            headerView.trailingAnchor.constraint(equalTo: backgroundImage.trailingAnchor, constant: -16),
+            headerView.heightAnchor.constraint(equalToConstant: 50),
+           
+            headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 10),
+            headerLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
+        ])
+       
     }
     
     private func setupBackgroundImage() {
@@ -51,7 +87,7 @@ class ForecastViewController: UIViewController {
             forecastList.leadingAnchor.constraint(equalTo: backgroundImage.leadingAnchor, constant: 16),
             forecastList.trailingAnchor.constraint(equalTo: backgroundImage.trailingAnchor, constant: -16),
             forecastList.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: -10),
-            forecastList.topAnchor.constraint(equalTo: backgroundImage.topAnchor, constant: 90)
+            forecastList.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 5)
         ])
     }
 }
@@ -71,33 +107,6 @@ extension ForecastViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         80
     }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = .cell
-        headerView.clipsToBounds = true
-        headerView.layer.cornerRadius = 12
-        
-        let label = UILabel()
-        label.text = "Forecast"
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 20, weight: .bold)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        headerView.addSubview(label)
-        
-        NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 10),
-            label.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
-        ])
-        
-        return headerView
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
-    }
-
 }
 
 extension ForecastViewController: ForecastViewModelProtocol {

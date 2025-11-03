@@ -6,7 +6,7 @@ class ForecastCell: UITableViewCell {
     private let containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .cell.withAlphaComponent(0.5)
+        view.backgroundColor = .cell
         view.layer.cornerRadius = 15
         view.clipsToBounds = true
         return view
@@ -23,7 +23,7 @@ class ForecastCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
-        label.font = .systemFont(ofSize: 10, weight: .bold)
+        label.font = .systemFont(ofSize: 15, weight: .bold)
         return label
     }()
     private let time = Double()
@@ -93,7 +93,8 @@ class ForecastCell: UITableViewCell {
     }
     
     func configure(with weather: ForecastWeatherItem) {
-        timeLabel.text = weather.dt_txt
+        let time = weather.dt_txt
+        timeLabel.text = time.formattedDate()
         tempLabel.text = "\(weather.main.temp) °C"
         
         if let icon = weather.weather.first?.icon {
