@@ -8,9 +8,32 @@
 import UIKit
 
 class FavoritesDetailsViewController: UIViewController {
+    
+    private let backgroundImageView: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(named: "background")
+        image.contentMode = .scaleAspectFill
+        image.translatesAutoresizingMaskIntoConstraints = false
+        return image
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        setupBackground()
+        
     }
+    private func setupBackground() {
+        view.addSubview(backgroundImageView)
+        NSLayoutConstraint.activate([
+            backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+    
+}
+
+#Preview {
+    FavoritesDetailsViewController()
 }
