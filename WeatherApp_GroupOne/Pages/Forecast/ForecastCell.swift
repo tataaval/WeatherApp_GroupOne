@@ -16,15 +16,12 @@ class ForecastCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage.testLogo
-        imageView.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: 60).isActive = true
         return imageView
     }()
     
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "2025-11-02 12:00:00"
         label.textColor = .white
         label.font = .systemFont(ofSize: 10, weight: .bold)
         return label
@@ -33,7 +30,6 @@ class ForecastCell: UITableViewCell {
     private let tempLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "30 C"
         label.textColor = .white
         return label
     }()
@@ -54,34 +50,46 @@ class ForecastCell: UITableViewCell {
     
     private func setupContainerView() {
         contentView.addSubview(containerView)
+        NSLayoutConstraint.activate([
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,  constant: -5),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 7),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -7)
+        ])
         
-        containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5).isActive = true
-        containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,  constant: -5).isActive = true
-        containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 7).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -7).isActive = true
     }
     
     private func setupWeatherLogo() {
         containerView.addSubview(weatherLogo)
         
-        weatherLogo.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10).isActive = true
-        weatherLogo.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            weatherLogo.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10),
+            weatherLogo.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            weatherLogo.heightAnchor.constraint(equalToConstant: 60),
+            weatherLogo.widthAnchor.constraint(equalToConstant: 60)
+        ])
+       
     }
     
     private func setupWeatherLabel() {
         containerView.addSubview(tempLabel)
         
-        tempLabel.leadingAnchor.constraint(equalTo: weatherLogo.trailingAnchor, constant: 5).isActive = true
-        tempLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5).isActive = true
-        tempLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5).isActive = true
-    }
+        NSLayoutConstraint.activate([
+            tempLabel.leadingAnchor.constraint(equalTo: weatherLogo.trailingAnchor, constant: 5),
+            tempLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
+            tempLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5)
+          ])
+        }
     
     private func setupTimeLabel() {
         containerView.addSubview(timeLabel)
         
-        timeLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10).isActive = true
-        timeLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5).isActive = true
-        timeLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5).isActive = true
+        NSLayoutConstraint.activate([
+            timeLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10),
+            timeLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
+            timeLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5)
+        ])
+        
     }
     
     func configure(with weather: WeatherItem) {
