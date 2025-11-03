@@ -13,33 +13,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        //Tab Bar
-        let tabBarController = UITabBarController()
         
-        let mainVC = HomeViewController()
-        mainVC.tabBarItem = UITabBarItem(title: "Main", image: UIImage(systemName: "house"), tag: 0)
-        
-        let forecastVC = ForecastViewController()
-        forecastVC.tabBarItem = UITabBarItem(title: "Forecast", image: UIImage(systemName: "cloud.sun"), tag: 1)
-        
-        let searchVC = SearchViewController()
-        searchVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "magnifyingglass"), tag: 2)
-        
-        let favoritesVC = FavoritesViewController()
-        favoritesVC.tabBarItem = UITabBarItem(title: "Locations", image: UIImage(systemName: "bookmark"), tag: 3)
-        
-        let aiAssistantVC = AIAssistantViewController()
-        aiAssistantVC.tabBarItem = UITabBarItem(title: "Assistant", image: UIImage(systemName: "message.badge.waveform"), tag: 4)
-        
-        tabBarController.viewControllers = [mainVC, forecastVC, searchVC, favoritesVC, aiAssistantVC]
-        window?.rootViewController = tabBarController
+        let navController = UINavigationController()
+        let tabCoordinator = TabBarCoordinator(navigationController: navController)
+        tabCoordinator.start()
+        window?.rootViewController = navController
         window?.makeKeyAndVisible()
-        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

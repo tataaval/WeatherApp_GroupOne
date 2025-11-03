@@ -9,10 +9,10 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    //MARK: - Static Properties
-    private var viewModel = WeatherViewModel()
-    
     //MARK: - Private Properties
+    private var viewModel: WeatherViewModel
+    private weak var coordinator: TabBarCoordinator?
+    
     private var weatherDetailsInCell: [WeatherDetailsInCell] = []
     private var weatherDetailsInHeader: WeatherDetailsInHeader = WeatherDetailsInHeader(icon: "", city: "", temperature: "", description: "")
     
@@ -37,6 +37,17 @@ class HomeViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
+    
+    //MARK: - Init
+    init(viewModel: WeatherViewModel, coordinator: TabBarCoordinator) {
+        self.viewModel = viewModel
+        self.coordinator = coordinator
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - View LifeCycle
     override func viewDidLoad() {
@@ -64,10 +75,10 @@ class HomeViewController: UIViewController {
     
     private func presentAlert(message: String) {
         let alert = UIAlertController(title: "დაფიქსირდა შეცდომა", message: message, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alert.addAction(okAction)
-            present(alert, animated: true, completion: nil)
-        }
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+    }
     
     private func setUpUI() {
         setUpBackground()
