@@ -7,14 +7,11 @@ extension String {
         inputFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         inputFormatter.locale = Locale(identifier: "en_US_POSIX")
 
-        if let date = inputFormatter.date(from: self) {
-            let outputFormatter = DateFormatter()
-            outputFormatter.dateFormat = "d MMM, h:mm a"
-            outputFormatter.locale = Locale(identifier: "en_US")
+        guard let date = inputFormatter.date(from: self) else { return self }
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "d MMM, h:mm a"
+        outputFormatter.locale = Locale(identifier: "en_US")
 
-            return outputFormatter.string(from: date)
-        } else {
-            return self
-        }
+        return outputFormatter.string(from: date)
     }
 }
