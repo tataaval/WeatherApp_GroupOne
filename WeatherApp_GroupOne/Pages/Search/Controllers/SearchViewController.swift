@@ -26,25 +26,25 @@ final class SearchViewController: UIViewController {
     }()
     
     private let searchField: UITextField = {
-        let tf = UITextField()
-        tf.placeholder = "Enter city name"
-        tf.textColor = .white
-        tf.font = UIFont.systemFont(ofSize: 16)
-        tf.backgroundColor = UIColor.white.withAlphaComponent(0.15)
-        tf.layer.cornerRadius = 10
-        tf.translatesAutoresizingMaskIntoConstraints = false
-        tf.setLeftPaddingPoints(12)
-        return tf
+        let textField = UITextField()
+        textField.placeholder = "Enter city name"
+        textField.textColor = .white
+        textField.font = UIFont.systemFont(ofSize: 16)
+        textField.backgroundColor = UIColor.white.withAlphaComponent(0.15)
+        textField.layer.cornerRadius = 10
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.setLeftPaddingPoints(12)
+        return textField
     }()
     
     private let searchButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
-        btn.tintColor = .white
-        btn.backgroundColor = UIColor.white.withAlphaComponent(0.15)
-        btn.layer.cornerRadius = 10
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        return btn
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = UIColor.white.withAlphaComponent(0.15)
+        button.layer.cornerRadius = 10
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     private let notFoundLabel: UILabel = {
