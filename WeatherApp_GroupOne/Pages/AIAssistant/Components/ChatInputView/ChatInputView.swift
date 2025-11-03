@@ -7,11 +7,17 @@
 
 import UIKit
 
+protocol ChatInputViewDelegate: AnyObject {
+    func messageSent(_ message: String)
+}
+
 class ChatInputView: UIView {
-    //MARK: - UI Componenets
+    //MARK: = stored Property
+    weak var delegate: ChatInputViewDelegate?
+    
+    //MARK: - UI Components
     private let textField: UITextField = {
         let textField = UITextField()
-        textField.borderStyle = .roundedRect
         textField.textColor = .white
         textField.borderStyle = .none
         textField.backgroundColor = .clear
@@ -41,6 +47,7 @@ class ChatInputView: UIView {
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupUI()
+        setupButtonAction()
     }
 
     required init?(coder: NSCoder) {
@@ -63,7 +70,6 @@ class ChatInputView: UIView {
 
     private func setupTexfield() {
         addSubview(textField)
-
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: 60),
             textField.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 12),
@@ -81,6 +87,18 @@ class ChatInputView: UIView {
             sendButton.widthAnchor.constraint(equalToConstant: 40),
             sendButton.heightAnchor.constraint(equalToConstant: 40),
         ])
+    }
+    
+    private func setupButtonAction() {
+        sendButton.addAction(UIAction { [weak self] _ in
+            self?.submitMessage()
+        }, for: .touchUpInside)
+    }
+    
+    private func submitMessage() {
+        guard let text = textField.text, !text.isEmpty else { return }
+        textField.text = ""
+        delegate?.messageSent(text)
     }
 
 }

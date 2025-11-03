@@ -10,14 +10,8 @@ import UIKit
 
 class AIAssistantViewController: UIViewController {
     
-    //MARK: - test data
-    
-    private let chatMessages: [ChatItemModel] = [
-        ChatItemModel(text: "რამე კაი მითხარი", isUserMessage: true),
-        ChatItemModel(text: "ახლა რა გინდა ორმ გითხრა მე", isUserMessage: false),
-        ChatItemModel(text: "რავი რავა ვართ მაგალითად", isUserMessage: true),
-        ChatItemModel(text: "უკეთესადაც ვყოფილვართ... lorem ipsum dolor sit amet, consectetur adipiscing elit. orem ipsum dolor sit amet, consectetur adipiscing elit. orem ipsum dolor sit amet, consectetur adipiscing elit. ", isUserMessage: false),
-    ]
+    //MARK: - Stored Property
+    private let viewModel: AIAssistantViewModel = AIAssistantViewModel()
 
     //MARK: - UI Components
     private let chatInputView: ChatInputView = ChatInputView()
@@ -34,6 +28,9 @@ class AIAssistantViewController: UIViewController {
         setBackgroundImage("background")
         setupUI()
         setupBindings()
+        
+        chatInputView.delegate = self
+        viewModel.output = self
     }
     
     //MARK: - Setup Functions
@@ -41,6 +38,7 @@ class AIAssistantViewController: UIViewController {
         setupChatInputView()
         setupTableView()
     }
+    
     private func setupChatInputView() {
         view.addSubview(chatInputView)
         chatInputView.translatesAutoresizingMaskIntoConstraints = false
@@ -73,7 +71,7 @@ class AIAssistantViewController: UIViewController {
 
 extension AIAssistantViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        chatMessages.count
+        viewModel.numberOfMessages
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -81,9 +79,31 @@ extension AIAssistantViewController: UITableViewDataSource, UITableViewDelegate 
             return UITableViewCell()
         }
         
-        let messageItem = chatMessages[indexPath.row]
+        let messageItem = viewModel.message(at: indexPath.row)
         cell.configure(with: messageItem)
         
         return cell
+    }
+}
+
+
+extension AIAssistantViewController: ChatInputViewDelegate {
+    func messageSent(_ message: String) {
+        if let sessionID = viewModel.currentSessionID {
+            viewModel.input.resumeSession(message, id: sessionID)
+        } else {
+            viewModel.input.startSession(message)
+        }
+    }
+}
+
+
+extension AIAssistantViewController: AIAssistantViewModelOutput {
+    func updateMessages(_ messages: [ChatItemModel]) {
+        let newIndex = messages.count - 1
+        let indexPath = IndexPath(row: newIndex, section: 0)
+        
+        chatTableView.insertRows(at: [indexPath], with: .left)
+        chatTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
 }

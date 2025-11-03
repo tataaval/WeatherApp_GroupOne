@@ -42,20 +42,6 @@ class ChatTableViewCell: UITableViewCell {
     private func setupUI() {
         setupWrapperView()
         setupMessageLabel()
-        contentView.addSubview(wrapperView)
-        wrapperView.addSubview(messageLabel)
-        
-        NSLayoutConstraint.activate([
-            wrapperView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
-            wrapperView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
-            wrapperView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            wrapperView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -16),
-
-            messageLabel.topAnchor.constraint(equalTo: wrapperView.topAnchor, constant: 8),
-            messageLabel.bottomAnchor.constraint(equalTo: wrapperView.bottomAnchor, constant: -8),
-            messageLabel.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor, constant: 12),
-            messageLabel.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor, constant: -12)
-        ])
     }
     
     private func setupWrapperView() {
