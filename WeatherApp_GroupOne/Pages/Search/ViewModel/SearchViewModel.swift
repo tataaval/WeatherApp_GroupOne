@@ -10,6 +10,7 @@ import Foundation
 final class SearchViewModel {
     var onWeatherUpdate: ((WeatherResponse) -> Void)?
     var onError: ((String) -> Void)?
+    var updateFavoriteButton: ((Bool) -> Void)?
     
     func fetchWeather(for city: String) {
         let url = API.searchForecast(for: city)
@@ -24,5 +25,11 @@ final class SearchViewModel {
                 }
             }
         }
+    }
+    
+    func savetoFavorites(_ city: String) {
+        FavoritesManager.shared.toggleFavorite(city: city)
+        let isFavorite = FavoritesManager.shared.isFavorite(city: city)
+        self.updateFavoriteButton?(isFavorite)
     }
 }

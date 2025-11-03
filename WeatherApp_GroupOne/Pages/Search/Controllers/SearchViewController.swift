@@ -146,6 +146,17 @@ final class SearchViewController: UIViewController {
             
             
         }
+        
+        //ფავორიტებში დამატება
+        weatherInfoView.onBookmarkTapped = { [weak self] name in
+            self?.viewModel.savetoFavorites(name)
+        }
+        
+        //ვიზუალურად გამოჩენა ბეჯზე
+        viewModel.updateFavoriteButton = { [weak self] isFavorite in
+            self?.weatherInfoView.updateBadge(isFavorite: isFavorite)
+        }
+        
     }
     
     // MARK: - Actions

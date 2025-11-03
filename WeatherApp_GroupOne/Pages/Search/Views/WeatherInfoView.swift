@@ -8,6 +8,9 @@
 import UIKit
 
 final class WeatherInfoView: UIView {
+    var onBookmarkTapped: ((_ name: String) -> Void)?
+    
+    private var cityName: String = ""
     
     // MARK: - UI Elements
     private let cityLabel: UILabel = {
@@ -42,6 +45,7 @@ final class WeatherInfoView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
+        setupButtonAction()
     }
     
     required init?(coder: NSCoder) {
@@ -70,8 +74,23 @@ final class WeatherInfoView: UIView {
         ])
     }
     
+    //MARK: - Actions
+    private func setupButtonAction() {
+        bookmarkButton.addAction(UIAction { [weak self] _ in
+            guard let self else { return }
+            self.onBookmarkTapped?(cityName)
+            
+        }, for: .touchUpInside)
+    }
+    
     // MARK: - Public Methods
     func configure(cityName: String) {
+        self.cityName = cityName
         cityLabel.text = cityName
+    }
+    
+    func updateBadge(isFavorite: Bool) {
+        let image = isFavorite ? UIImage(systemName: "bookmark.fill") : UIImage(systemName: "bookmark")
+        bookmarkButton.setImage(image, for: .normal)
     }
 }
