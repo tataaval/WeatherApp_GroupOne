@@ -5,9 +5,7 @@ class ForecastViewController: UIViewController {
     
     let identifier = "ForecastCell"
     
-    private let viewModel = ForecastViewModel()
-    
-    private let backgroundImage = UIImageView()
+    private let viewModel: ForecastViewModel
     
     private let forecastList: UITableView = {
         let tableView = UITableView()
@@ -35,10 +33,20 @@ class ForecastViewController: UIViewController {
         return label
     }()
     
+    init(viewModel: ForecastViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+        setBackgroundImage()
         setupHeaderView()
-        setupBackgroundImage()
         setupTableView()
         viewModel.fetchData()
         forecastList.register(ForecastCell.self, forCellReuseIdentifier: identifier)
@@ -48,33 +56,19 @@ class ForecastViewController: UIViewController {
     
     
     private func setupHeaderView() {
-        backgroundImage.addSubview(headerView)
+        view.addSubview(headerView)
         headerView.addSubview(headerLabel)
         
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: backgroundImage.topAnchor, constant: 70),
-            headerView.leadingAnchor.constraint(equalTo: backgroundImage.leadingAnchor, constant: 16),
-            headerView.trailingAnchor.constraint(equalTo: backgroundImage.trailingAnchor, constant: -16),
+            headerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 70),
+            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             headerView.heightAnchor.constraint(equalToConstant: 50),
            
             headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 10),
             headerLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
         ])
        
-    }
-    
-    private func setupBackgroundImage() {
-        view.addSubview(backgroundImage)
-        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
-        backgroundImage.image = UIImage.background
-        
-        NSLayoutConstraint.activate([
-            backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            backgroundImage.topAnchor.constraint(equalTo: view.topAnchor),
-            backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-        
     }
     
     private func setupTableView() {
@@ -84,9 +78,9 @@ class ForecastViewController: UIViewController {
         forecastList.dataSource = self
         
         NSLayoutConstraint.activate([
-            forecastList.leadingAnchor.constraint(equalTo: backgroundImage.leadingAnchor, constant: 16),
-            forecastList.trailingAnchor.constraint(equalTo: backgroundImage.trailingAnchor, constant: -16),
-            forecastList.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: -10),
+            forecastList.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            forecastList.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            forecastList.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             forecastList.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 5)
         ])
     }

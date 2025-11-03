@@ -1,5 +1,5 @@
 //
-//  Extension.swift
+//  UITextField+Extensions.swift
 //  WeatherApp_GroupOne
 //
 //  Created by Temo Pestvenidze on 02.11.25.

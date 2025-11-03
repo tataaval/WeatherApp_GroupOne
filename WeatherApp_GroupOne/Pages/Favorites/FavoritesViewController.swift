@@ -10,15 +10,8 @@ import UIKit
 class FavoritesViewController: UIViewController {
     //MARK: Properties
     var cities: [String] = []
-    var viewModel = FavoritesViewModel()
+    var viewModel: FavoritesViewModel
     //MARK: UI Components
-    private let backgroundImageView: UIImageView = {
-        let image = UIImageView()
-        image.image = UIImage(named: "background")
-        image.contentMode = .scaleAspectFill
-        image.translatesAutoresizingMaskIntoConstraints = false
-        return image
-    }()
     private let headerLabel: UILabel = {
         let label = UILabel()
         label.text = "Favorites"
@@ -46,10 +39,22 @@ class FavoritesViewController: UIViewController {
         label.isHidden = true
         return label
     }()
+    
+    //MARK: - Init
+    init(viewModel: FavoritesViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBackground()
+        view.backgroundColor = .systemBackground
+        setBackgroundImage()
         setupHeader()
         setupCollectionView()
         setupEmptyLabel()
@@ -61,16 +66,6 @@ class FavoritesViewController: UIViewController {
         loadFavorites()
     }
     //MARK: Setup UI
-    private func setupBackground() {
-        view.addSubview(backgroundImageView)
-        NSLayoutConstraint.activate([
-            backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
-            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-    }
-    
     private func setupHeader() {
         view.addSubview(headerLabel)
         NSLayoutConstraint.activate([
@@ -116,8 +111,4 @@ class FavoritesViewController: UIViewController {
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
-}
-
-#Preview {
-    FavoritesViewController()
 }

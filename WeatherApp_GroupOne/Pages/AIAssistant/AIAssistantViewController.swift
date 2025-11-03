@@ -11,7 +11,7 @@ import UIKit
 class AIAssistantViewController: UIViewController {
     
     //MARK: - Stored Property
-    private let viewModel: AIAssistantViewModel = AIAssistantViewModel()
+    private let viewModel: AIAssistantViewModel
 
     //MARK: - UI Components
     private let chatInputView: ChatInputView = ChatInputView()
@@ -22,10 +22,21 @@ class AIAssistantViewController: UIViewController {
         return tableView
     }()
     
+    //MARK: - Init
+    init(viewModel: AIAssistantViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     //MARK: - lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setBackgroundImage("background")
+        view.backgroundColor = .systemBackground
+        setBackgroundImage()
         setupUI()
         setupBindings()
         

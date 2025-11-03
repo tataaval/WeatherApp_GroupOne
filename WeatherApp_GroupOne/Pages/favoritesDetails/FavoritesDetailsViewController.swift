@@ -12,15 +12,7 @@ final class FavoritesDetailsViewController: UIViewController {
     var cityName: String = ""
     private let viewModel = SearchViewModel()
     private var items: [(icon: String, title: String, value: String)] = []
-    // MARK: - UI Components
-    private let backgroundImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "background")
-        imageView.contentMode = .scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
+    // MARK: - UI Components    
     private let weatherInfoView: WeatherInfoView = {
         let view = WeatherInfoView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -50,6 +42,8 @@ final class FavoritesDetailsViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+        setBackgroundImage()
         setupUI()
         setupBindings()
         setupCollectionView()
@@ -58,22 +52,12 @@ final class FavoritesDetailsViewController: UIViewController {
     
     // MARK: - Setup Methods
     private func setupUI() {
-        setupBackgroundImageView()
         setupWeatherInfoView()
         setupNotFoundLabel()
         setupLoadingIndicator()
     }
 
     // MARK: - UI Setup
-    private func setupBackgroundImageView() {
-        view.addSubview(backgroundImageView)
-        NSLayoutConstraint.activate([
-            backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
-            backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-    }
     private func setupWeatherInfoView() {
         view.addSubview(weatherInfoView)
         NSLayoutConstraint.activate([
