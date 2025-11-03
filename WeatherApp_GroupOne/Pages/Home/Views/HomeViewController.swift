@@ -50,13 +50,24 @@ class HomeViewController: UIViewController {
     //MARK: - Methods
     private func bindViewModel() {
         viewModel.onWeatherDataFetched = { [weak self] weather in
-            if let self = self {
-                self.weatherDetailsInHeader = self.viewModel.weatherDetailsInHeader
-                self.weatherDetailsInCell = self.viewModel.weatherDetailsInCell
-            }
-            self?.detailsCollectionView.reloadData()
+            guard let self = self else { return }
+            self.weatherDetailsInHeader = self.viewModel.weatherDetailsInHeader
+            self.weatherDetailsInCell = self.viewModel.weatherDetailsInCell
+            self.detailsCollectionView.reloadData()
+        }
+        
+        viewModel.onError = { [weak self] error in
+            guard let self = self else { return }
+            self.presentAlert(message: error)
         }
     }
+    
+    private func presentAlert(message: String) {
+        let alert = UIAlertController(title: "დაფიქსირდა შეცდომა", message: message, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(okAction)
+            present(alert, animated: true, completion: nil)
+        }
     
     private func setUpUI() {
         setUpBackground()

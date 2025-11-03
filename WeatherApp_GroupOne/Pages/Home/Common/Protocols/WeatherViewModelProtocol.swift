@@ -8,5 +8,6 @@
 protocol WeatherViewModelProtocol {
     var weatherData: WeatherData? { get }
     var onWeatherDataFetched: ((WeatherData) -> Void)? { get set }
+    var onError: ((String) -> Void)? { get set }
     func fetchData()
 }

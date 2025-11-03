@@ -51,17 +51,20 @@ class CustomHeaderView: UICollectionReusableView {
     
     private func setUpMainInfoStack() {
         addSubview(headerStack)
+        configureStackSubviews()
+        NSLayoutConstraint.activate([
+            headerStack.centerXAnchor.constraint(equalTo: centerXAnchor),
+            headerStack.topAnchor.constraint(equalTo: topAnchor),
+        ])
+    }
+    
+    private func configureStackSubviews() {
         headerStack.addArrangedSubview(weatherIcon)
         headerStack.addArrangedSubview(cityLabel)
         headerStack.setCustomSpacing(15, after: cityLabel)
         headerStack.addArrangedSubview(temperatureLabel)
         headerStack.setCustomSpacing(6, after: temperatureLabel)
         headerStack.addArrangedSubview(weatherDescriptionLabel)
-        
-        NSLayoutConstraint.activate([
-            headerStack.centerXAnchor.constraint(equalTo: centerXAnchor),
-            headerStack.topAnchor.constraint(equalTo: topAnchor),
-        ])
     }
     
     func configure(with details: WeatherDetailsInHeader) {

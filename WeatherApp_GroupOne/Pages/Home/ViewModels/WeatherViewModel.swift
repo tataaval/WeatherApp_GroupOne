@@ -12,6 +12,7 @@ class WeatherViewModel: WeatherViewModelProtocol {
     //MARK: - Properties
     var weatherData: WeatherData?
     var onWeatherDataFetched: ((WeatherData) -> Void)?
+    var onError: ((String) -> Void)?
     
     var weatherDetailsInCell: [WeatherDetailsInCell] = []
     var weatherDetailsInHeader: WeatherDetailsInHeader = WeatherDetailsInHeader(icon: "", city: "", temperature: "", description: "")
@@ -84,6 +85,7 @@ class WeatherViewModel: WeatherViewModelProtocol {
                     self.onWeatherDataFetched?(response)
                     
                 case .failure(let error):
+                    self.onError?("სცადეთ მოგვიანებით")
                     print("დაფიქსირდა შეცდომა: \(error.localizedDescription)")
                 }
             }
