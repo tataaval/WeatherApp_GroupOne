@@ -7,7 +7,6 @@ protocol ForecastViewModelProtocol: AnyObject {
 class ForecastViewModel {
     
     private(set) var weatherHours: [ForecastWeatherItem] = []
-    private(set) var cityName: String = ""
     weak var delegate: ForecastViewModelProtocol?
     
     func fetchData() {

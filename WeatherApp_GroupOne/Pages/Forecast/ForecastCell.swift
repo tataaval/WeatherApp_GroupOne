@@ -6,7 +6,7 @@ class ForecastCell: UITableViewCell {
     private let containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .cell
+        view.backgroundColor = .cell.withAlphaComponent(0.5)
         view.layer.cornerRadius = 15
         view.clipsToBounds = true
         return view
@@ -37,7 +37,7 @@ class ForecastCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
-
+        contentView.backgroundColor = .clear
         setupContainerView()
         setupWeatherLogo()
         setupWeatherLabel()
@@ -94,8 +94,19 @@ class ForecastCell: UITableViewCell {
     
     func configure(with weather: ForecastWeatherItem) {
         timeLabel.text = weather.dt_txt
-        tempLabel.text = "\(weather.main.temp)"
-//        weatherLogo.image = weather.weather.icon
+        tempLabel.text = "\(weather.main.temp) °C"
         
+        if let icon = weather.weather.first?.icon {
+            let iconURL = URL(string: "https://openweathermap.org/img/wn/\(icon)@2x.png")
+            if let iconURL = iconURL {
+                URLSession.shared.dataTask(with: iconURL) { data, _, _ in
+                    if let data = data {
+                        DispatchQueue.main.async {
+                            self.weatherLogo.image = UIImage(data: data)
+                        }
+                    }
+                }.resume()
+            }
+        }
     }
 }

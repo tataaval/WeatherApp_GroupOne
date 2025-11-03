@@ -74,7 +74,9 @@ extension ForecastViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
-        headerView.backgroundColor = .clear
+        headerView.backgroundColor = .cell
+        headerView.clipsToBounds = true
+        headerView.layer.cornerRadius = 12
         
         let label = UILabel()
         label.text = "Forecast"
@@ -85,7 +87,7 @@ extension ForecastViewController: UITableViewDelegate, UITableViewDataSource {
         headerView.addSubview(label)
         
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 5),
+            label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 10),
             label.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
         ])
         
