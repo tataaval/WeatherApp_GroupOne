@@ -34,13 +34,13 @@ struct Main: Decodable {
 }
 
 struct Wind: Decodable {
-    var speed: Double
-    var deg: Double
-    var gust: Double
+    let speed: Double
+    let deg: Double
+    let gust: Double
 }
 
 struct Sys: Decodable {
-    var country: String
-    var sunrise: Int
-    var sunset: Int
+    let country: String
+    let sunrise: Int
+    let sunset: Int
 }

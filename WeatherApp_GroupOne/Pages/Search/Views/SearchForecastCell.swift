@@ -1,5 +1,5 @@
 //
-//  ForecastCell.swift
+//  SearchForecastCell.swift
 //  WeatherApp_GroupOne
 //
 //  Created by Temo Pestvenidze on 02.11.25.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-final class ForecastCell: UICollectionViewCell {
-    static let identifier = "ForecastCell"
+final class SearchForecastCell: UICollectionViewCell {
+    static let identifier = "SearchForecastCell"
     
     private let container: UIView = {
         let view = UIView()

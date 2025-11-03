@@ -124,7 +124,7 @@ final class SearchViewController: UIViewController {
     private func setupCollectionView() {
         weatherInfoView.collectionView.dataSource = self
         weatherInfoView.collectionView.delegate = self
-        weatherInfoView.collectionView.register(ForecastCell.self, forCellWithReuseIdentifier: ForecastCell.identifier)
+        weatherInfoView.collectionView.register(SearchForecastCell.self, forCellWithReuseIdentifier: SearchForecastCell.identifier)
     }
     
     private func setupBindings() {
@@ -190,7 +190,7 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = items[indexPath.item]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCell.identifier, for: indexPath) as! ForecastCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchForecastCell.identifier, for: indexPath) as! SearchForecastCell
         if item.icon.starts(with: "http") {
             cell.configure(icon: nil, title: item.title, value: item.value)
             cell.loadIcon(from: URL(string: item.icon))

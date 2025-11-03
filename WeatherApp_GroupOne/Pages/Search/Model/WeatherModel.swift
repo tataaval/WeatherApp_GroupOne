@@ -8,19 +8,9 @@
 import Foundation
 
 struct WeatherResponse: Decodable {
-    let main: Main
-    let weather: [Weather]
+    let main: ForecastMain
+    let weather: [ForecastWeather]
 }
 
-struct Main: Decodable {
-    let temp: Double
-    let humidity: Int
-    let pressure: Int
-}
-
-struct Weather: Decodable {
-    let description: String
-    let icon: String
-}
 
 

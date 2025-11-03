@@ -15,6 +15,6 @@ struct API {
     static let forecast = "\(baseURL)forecast?lat=\(lat)&lon=\(lon)&appid=\(apiKey)&units=metric"
     
     static func searchForecast(for location: String) -> String {
-        "\(baseURL)/weather?q=\(location)&appid=\(apiKey)&units=metric"
+        "\(baseURL)weather?q=\(location)&appid=\(apiKey)&units=metric"
     }
 }

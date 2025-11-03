@@ -92,7 +92,7 @@ class ForecastCell: UITableViewCell {
         
     }
     
-    func configure(with weather: WeatherItem) {
+    func configure(with weather: ForecastWeatherItem) {
         timeLabel.text = weather.dt_txt
         tempLabel.text = "\(weather.main.temp)"
 //        weatherLogo.image = weather.weather.icon
