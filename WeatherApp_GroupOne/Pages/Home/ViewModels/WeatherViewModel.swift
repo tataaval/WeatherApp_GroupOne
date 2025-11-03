@@ -49,7 +49,8 @@ class WeatherViewModel: WeatherViewModelProtocol {
     
     //TODO: countryname-ს ვაჩენ თუარა და თუ კი მთლიანს?
     var countryName: String {
-        weatherData?.sys.country ?? ""//.countryName(countryCode: weatherData.sys.country) ?? weatherData.sys.country
+        //weatherData?.sys.country ?? ""//.countryName(countryCode: weatherData.sys.country) ?? weatherData.sys.country
+        weatherData?.sys.country.countryName(countryCode: weatherData?.sys.country ?? "") ?? ""
     }
     
     //MARK: - Methods
@@ -76,7 +77,7 @@ class WeatherViewModel: WeatherViewModelProtocol {
                     
                     self.weatherDetailsInHeader = WeatherDetailsInHeader(
                         icon: "https://openweathermap.org/img/wn/\(self.icon)@2x.png",
-                        //                            city: viewModel.cityName,
+                        //city: self.cityName,
                         city: "\(self.cityName), \(self.countryName)",
                         temperature: "\(self.realTemperature)°C",
                         description: self.description
