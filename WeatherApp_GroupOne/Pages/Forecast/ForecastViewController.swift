@@ -32,10 +32,13 @@ class ForecastViewController: UIViewController {
         backgroundImage.translatesAutoresizingMaskIntoConstraints = false
         backgroundImage.image = UIImage.background
         
-        backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        backgroundImage.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundImage.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
     }
     
     private func setupTableView() {
@@ -44,10 +47,12 @@ class ForecastViewController: UIViewController {
         forecastList.delegate = self
         forecastList.dataSource = self
         
-        forecastList.leadingAnchor.constraint(equalTo: backgroundImage.leadingAnchor, constant: 16).isActive = true
-        forecastList.trailingAnchor.constraint(equalTo: backgroundImage.trailingAnchor, constant: -16).isActive = true
-        forecastList.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: -10).isActive = true
-        forecastList.topAnchor.constraint(equalTo: backgroundImage.topAnchor, constant: 90).isActive = true
+        NSLayoutConstraint.activate([
+            forecastList.leadingAnchor.constraint(equalTo: backgroundImage.leadingAnchor, constant: 16),
+            forecastList.trailingAnchor.constraint(equalTo: backgroundImage.trailingAnchor, constant: -16),
+            forecastList.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: -10),
+            forecastList.topAnchor.constraint(equalTo: backgroundImage.topAnchor, constant: 90)
+        ])
     }
 }
 
