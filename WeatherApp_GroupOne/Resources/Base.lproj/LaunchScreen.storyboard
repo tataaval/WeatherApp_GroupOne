@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24127" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -15,18 +14,49 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="h4A-W6-Uwv">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="სიტყვაზე გვენდეთ" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0zC-di-2bd">
+                                <rect key="frame" x="76" y="495" width="241" height="37"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="37" id="Ho6-Vq-aBr"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Menlo-Bold" family="Menlo" pointSize="22"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mainLogo" translatesAutoresizingMaskIntoConstraints="NO" id="3D8-nV-eDN">
+                                <rect key="frame" x="76" y="205" width="241" height="188"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="188" id="e0O-wV-Y1r"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.16907462856795091" green="0.092097245395480559" blue="0.32577277795232906" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="3D8-nV-eDN" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="87" id="6Jk-Jm-Kvc"/>
+                            <constraint firstItem="0zC-di-2bd" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="76" id="Kfy-C1-izg"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3D8-nV-eDN" secondAttribute="trailing" constant="76" id="M1G-Pm-UMA"/>
+                            <constraint firstItem="3D8-nV-eDN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="76" id="Ux8-oo-2L4"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="0zC-di-2bd" secondAttribute="trailing" constant="76" id="dC6-a1-OJd"/>
+                            <constraint firstItem="0zC-di-2bd" firstAttribute="top" secondItem="3D8-nV-eDN" secondAttribute="bottom" constant="102" id="eVQ-yr-7bH"/>
+                            <constraint firstItem="h4A-W6-Uwv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fwe-HQ-nrV"/>
+                            <constraint firstItem="h4A-W6-Uwv" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="gbb-ev-7eq"/>
+                            <constraint firstAttribute="bottom" secondItem="h4A-W6-Uwv" secondAttribute="bottom" id="nI2-2R-xTL"/>
+                            <constraint firstItem="h4A-W6-Uwv" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="rFH-V9-5Zb"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52.671755725190835" y="374.64788732394368"/>
         </scene>
     </scenes>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <image name="Background" width="414" height="896"/>
+        <image name="mainLogo" width="512" height="512"/>
     </resources>
 </document>
