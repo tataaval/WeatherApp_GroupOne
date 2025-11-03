@@ -18,9 +18,10 @@ class FavoritesCell: UICollectionViewCell {
     }()
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor = UIColor(named: "cellColor")
+        contentView.backgroundColor = UIColor(named: "cellColor") ?? .systemBackground
         contentView.layer.masksToBounds = true
         contentView.layer.cornerRadius = 20
+        contentView.clipsToBounds = true
         setupLocationLabel()
     }
     required init?(coder: NSCoder) {

@@ -26,14 +26,12 @@ extension FavoritesViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoritesCell", for: indexPath) as! FavoritesCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoritesCell", for: indexPath) as? FavoritesCell else {return UICollectionViewCell()}
+          
         cell.locationLabel.text = cities[indexPath.section].name
         return cell
-    }
-}
-
-
-
+            }
+        }
 extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView,layout collectionViewLayout: UICollectionViewLayout,sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -49,7 +47,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
         return UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0)
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let Cell = collectionView.cellForItem(at: indexPath) as! FavoritesCell
+        let  countryCell = collectionView.cellForItem(at: indexPath) as? FavoritesCell
         let favoritesDetailsVC = FavoritesDetailsViewController()
         self.present(favoritesDetailsVC, animated: true)
     }

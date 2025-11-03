@@ -9,7 +9,7 @@ import UIKit
 
 class FavoritesViewController: UIViewController {
     
-    var cities = Locations.cityNames
+    var cities = Location.cityNames
     private let backgroundImageView: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "background")
