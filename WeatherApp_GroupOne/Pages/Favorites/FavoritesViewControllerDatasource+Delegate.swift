@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+//Mark: CollectionView Datasource + Delegate
 extension FavoritesViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -28,7 +28,7 @@ extension FavoritesViewController: UICollectionViewDataSource {
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoritesCell", for: indexPath) as? FavoritesCell else {return UICollectionViewCell()}
           
-        cell.locationLabel.text = cities[indexPath.section].name
+        cell.locationLabel.text = cities[indexPath.section]
         return cell
             }
         }
@@ -47,8 +47,9 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
         return UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0)
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let  countryCell = collectionView.cellForItem(at: indexPath) as? FavoritesCell
+        let selectedCity = cities[indexPath.section]
         let favoritesDetailsVC = FavoritesDetailsViewController()
+        favoritesDetailsVC.cityName = selectedCity
         self.present(favoritesDetailsVC, animated: true)
     }
     
