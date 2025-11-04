@@ -47,7 +47,7 @@ class WeatherDetailsCell: UICollectionViewCell {
     
     //MARK: - Methods
     private func setUpUI() {
-        backgroundColor = UIColor(named: "CustomPurple")//?.withAlphaComponent(0.7)
+        backgroundColor = UIColor(named: "cellColor")//?.withAlphaComponent(0.7)
         layer.cornerRadius = 25
         
         setUpCellStackView()

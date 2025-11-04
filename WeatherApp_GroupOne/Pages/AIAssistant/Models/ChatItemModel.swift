@@ -9,4 +9,5 @@
 struct ChatItemModel {
     var text: String
     var isUserMessage: Bool
+    var isLoading: Bool = false
 }

@@ -1,3 +1,9 @@
+//
+//  String+Extensions.swift
+//  WeatherApp_GroupOne
+//
+//  Created by Tatarella on 03.11.25.
+//
 
 import Foundation
 

@@ -24,16 +24,20 @@ class TabBarCoordinator: Coordinator {
         let homeVC = HomeViewController(viewModel: homeViewModel, coordinator: self)
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
         
-        let forecastVC = ForecastViewController()
+        let forecastViewModel = ForecastViewModel()
+        let forecastVC = ForecastViewController(viewModel: forecastViewModel)
         forecastVC.tabBarItem = UITabBarItem(title: "Forecast", image: UIImage(systemName: "cloud.sun"), tag: 1)
         
-        let searchVC = SearchViewController()
+        let searchViewModel = SearchViewModel()
+        let searchVC = SearchViewController(viewModel: searchViewModel)
         searchVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "magnifyingglass"), tag: 2)
         
-        let favoritesVC = FavoritesViewController()
+        let favoritesViewModel = FavoritesViewModel()
+        let favoritesVC = FavoritesViewController(viewModel: favoritesViewModel)
         favoritesVC.tabBarItem = UITabBarItem(title: "Locations", image: UIImage(systemName: "bookmark"), tag: 3)
         
-        let aiAssistantVC = AIAssistantViewController()
+        let aiAssistantViewModel = AIAssistantViewModel()
+        let aiAssistantVC = AIAssistantViewController(viewModel: aiAssistantViewModel)
         aiAssistantVC.tabBarItem = UITabBarItem(title: "Assistant", image: UIImage(systemName: "message.badge.waveform"), tag: 4)
         
         tabBarController.viewControllers = [homeVC, forecastVC, searchVC, favoritesVC, aiAssistantVC]

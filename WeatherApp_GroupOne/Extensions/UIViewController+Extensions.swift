@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIViewController {
-    func setBackgroundImage(_ imageName: String, contentMode: UIView.ContentMode = .scaleAspectFill) {
+    func setBackgroundImage(_ imageName: String = "BackgroundImage", contentMode: UIView.ContentMode = .scaleAspectFill) {
         let backgroundImageView = UIImageView(frame: view.bounds)
         backgroundImageView.image = UIImage(named: imageName)
         backgroundImageView.contentMode = contentMode

@@ -11,7 +11,7 @@ import UIKit
 class AIAssistantViewController: UIViewController {
     
     //MARK: - Stored Property
-    private let viewModel: AIAssistantViewModel = AIAssistantViewModel()
+    private let viewModel: AIAssistantViewModel
 
     //MARK: - UI Components
     private let chatInputView: ChatInputView = ChatInputView()
@@ -19,13 +19,25 @@ class AIAssistantViewController: UIViewController {
         let tableView = UITableView()
         tableView.backgroundColor = .clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.separatorStyle = .none
         return tableView
     }()
+    
+    //MARK: - Init
+    init(viewModel: AIAssistantViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setBackgroundImage("background")
+        view.backgroundColor = .systemBackground
+        setBackgroundImage()
         setupUI()
         setupBindings()
         
@@ -100,10 +112,17 @@ extension AIAssistantViewController: ChatInputViewDelegate {
 
 extension AIAssistantViewController: AIAssistantViewModelOutput {
     func updateMessages(_ messages: [ChatItemModel]) {
-        let newIndex = messages.count - 1
-        let indexPath = IndexPath(row: newIndex, section: 0)
-        
-        chatTableView.insertRows(at: [indexPath], with: .left)
-        chatTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        let currentRows = chatTableView.numberOfRows(inSection: 0)
+        let newRows = messages.count
+
+        if newRows > currentRows {
+            let indexPath = IndexPath(row: newRows - 1, section: 0)
+            chatTableView.insertRows(at: [indexPath], with: .left)
+            chatTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        } else {
+            let indexPath = IndexPath(row: newRows - 1, section: 0)
+            chatTableView.reloadRows(at: [indexPath], with: .fade)
+            chatTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        }
     }
 }

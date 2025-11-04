@@ -10,14 +10,6 @@ import UIKit
 final class SearchViewController: UIViewController {
     
     // MARK: - UI
-    private let backgroundImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "background")
-        imageView.contentMode = .scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
     private let weatherInfoView: WeatherInfoView = {
         let view = WeatherInfoView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -59,15 +51,27 @@ final class SearchViewController: UIViewController {
     }()
     
     // MARK: - ViewModel
-    private let viewModel = SearchViewModel()
+    private let viewModel: SearchViewModel
     
     // MARK: - Data
     private var items: [(icon: String, title: String, value: String)] = []
+    
+    
+    //MARK: - Init
+    init(viewModel: SearchViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        setBackgroundImage()
         setupUI()
         setupBindings()
         setupCollectionView()
@@ -86,20 +90,14 @@ final class SearchViewController: UIViewController {
     
     // MARK: - Setup
     private func setupUI() {
-        view.addSubview(backgroundImageView)
         view.addSubview(searchField)
         view.addSubview(searchButton)
         view.addSubview(weatherInfoView)
         view.addSubview(notFoundLabel)
         
         NSLayoutConstraint.activate([
-            backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
-            backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
             
-            searchField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            searchField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             searchField.trailingAnchor.constraint(equalTo: searchButton.leadingAnchor, constant: -8),
             searchField.heightAnchor.constraint(equalToConstant: 44),
@@ -188,6 +186,9 @@ final class SearchViewController: UIViewController {
             ("drop.fill", "Humidity", humidity),
             ("gauge", "Pressure", pressure)
         ]
+        
+        let cityName = searchField.text?.capitalized ?? ""
+        viewModel.checkIfFavorite(cityName)
         
         self.weatherInfoView.isHidden = false
         self.weatherInfoView.configure(cityName: searchField.text?.capitalized ?? "")

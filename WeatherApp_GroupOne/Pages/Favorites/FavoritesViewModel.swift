@@ -11,7 +11,7 @@ final class FavoritesViewModel {
     var onFavoritesUpdate: (([String]) -> Void)?
     
     func loadFavorites() {
-           let favorites = FavoritesManager.shared.getFavorites()
-           onFavoritesUpdate?(favorites)
-       }
+       let favorites = FavoritesManager.shared.getFavorites()
+       onFavoritesUpdate?(favorites)
+   }
 }

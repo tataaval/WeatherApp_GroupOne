@@ -52,7 +52,8 @@ class HomeViewController: UIViewController {
     //MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = .systemBackground
+        setBackgroundImage()
         setUpUI()
         bindViewModel()
         viewModel.fetchData()
