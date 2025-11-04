@@ -68,8 +68,14 @@ class ChatTableViewCell: UITableViewCell {
     //MARK: - Configure
     func configure(with message: ChatItemModel) {
         messageLabel.text = message.text
-        //TODO: asset-ებში არსებულით ფერით შეიცვალოს
-        wrapperView.backgroundColor = message.isUserMessage ? UIColor(red: 98 / 255, green: 47 / 255, blue: 181 / 255, alpha: 1) : UIColor(red: 98 / 255, green: 47 / 255, blue: 181 / 255, alpha: 0.3)
+
+        if message.isLoading {
+            wrapperView.backgroundColor = .clear
+            messageLabel.font = UIFont.italicSystemFont(ofSize: 14)
+        } else {
+            wrapperView.backgroundColor = message.isUserMessage ? .cell : .cell.withAlphaComponent(0.3)
+            messageLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        }
     }
     
 }

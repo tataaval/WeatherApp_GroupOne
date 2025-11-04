@@ -112,10 +112,17 @@ extension AIAssistantViewController: ChatInputViewDelegate {
 
 extension AIAssistantViewController: AIAssistantViewModelOutput {
     func updateMessages(_ messages: [ChatItemModel]) {
-        let newIndex = messages.count - 1
-        let indexPath = IndexPath(row: newIndex, section: 0)
-        
-        chatTableView.insertRows(at: [indexPath], with: .left)
-        chatTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        let currentRows = chatTableView.numberOfRows(inSection: 0)
+        let newRows = messages.count
+
+        if newRows > currentRows {
+            let indexPath = IndexPath(row: newRows - 1, section: 0)
+            chatTableView.insertRows(at: [indexPath], with: .left)
+            chatTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        } else {
+            let indexPath = IndexPath(row: newRows - 1, section: 0)
+            chatTableView.reloadRows(at: [indexPath], with: .fade)
+            chatTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        }
     }
 }

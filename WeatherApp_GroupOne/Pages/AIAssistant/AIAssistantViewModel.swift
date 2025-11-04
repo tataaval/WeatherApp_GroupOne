@@ -49,12 +49,15 @@ class AIAssistantViewModel: AIAssistantViewModelType {
     private func appendUserMessage(_ text: String) {
         chatMessages.append(ChatItemModel(text: text, isUserMessage: true))
     }
-
-    private func appendAssistantMessage(_ text: String) {
-        chatMessages.append(ChatItemModel(text: text, isUserMessage: false))
+    
+    private func appendThinkingMessage() -> Int {
+        let placeholder = ChatItemModel(text: "დავფიქრდები, ან გიპასუხებ, ან ვერა...", isUserMessage: false, isLoading: true)
+        chatMessages.append(placeholder)
+        return chatMessages.count - 1
     }
 
     private func sendRequest(prompt: String, url: String) {
+        let placeholderIndex = appendThinkingMessage()
         let body = AIAssistantRequestModel(prompt: prompt)
 
         NetworkService.shared.postData(baseURL: url, requestBody: body) {
@@ -66,20 +69,13 @@ class AIAssistantViewModel: AIAssistantViewModelType {
                 switch result {
                 case .success(let response):
                     self.sessionID = response.session_id
-                    self.appendAssistantMessage(response.answer)
-
+                    self.chatMessages[placeholderIndex] = ChatItemModel(text: response.answer, isUserMessage: false)
                 case .failure(let error):
-                    self.handleError(error)
+                    self.chatMessages[placeholderIndex] = ChatItemModel(text: "Error occurred: \(error.localizedDescription)",isUserMessage: false)
                 }
             }
         }
     }
-
-    private func handleError(_ error: Error) {
-        print(error.localizedDescription)
-        appendAssistantMessage("Error occured, \(error.localizedDescription)")
-    }
-
 }
 
 //MARK: - AIAssistantViewModelInput
