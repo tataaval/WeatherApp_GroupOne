@@ -22,7 +22,7 @@ final class WeatherInfoView: UIView {
         return label
     }()
     
-    /*private*/ let bookmarkButton: UIButton = {
+        let bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "bookmark"), for: .normal)
         button.tintColor = .white

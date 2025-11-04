@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+//Mark: CollectionView Datasource + Delegate
 extension FavoritesViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {

@@ -8,12 +8,10 @@
 import UIKit
 
 final class FavoritesDetailsViewController: UIViewController {
-    
     // MARK: - Properties
     var cityName: String = ""
     private let viewModel = SearchViewModel()
     private var items: [(icon: String, title: String, value: String)] = []
-    
     // MARK: - UI Components
     private let backgroundImageView: UIImageView = {
         let imageView = UIImageView()
@@ -60,29 +58,46 @@ final class FavoritesDetailsViewController: UIViewController {
     
     // MARK: - Setup Methods
     private func setupUI() {
+        setupBackgroundImageView()
+        setupWeatherInfoView()
+        setupNotFoundLabel()
+        setupLoadingIndicator()
+    }
+
+    // MARK: - UI Setup
+    private func setupBackgroundImageView() {
         view.addSubview(backgroundImageView)
-        view.addSubview(weatherInfoView)
-        view.addSubview(notFoundLabel)
-        view.addSubview(loadingIndicator)
-        
         NSLayoutConstraint.activate([
             backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
             backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
+            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    private func setupWeatherInfoView() {
+        view.addSubview(weatherInfoView)
+        NSLayoutConstraint.activate([
             weatherInfoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             weatherInfoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             weatherInfoView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            weatherInfoView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
+            weatherInfoView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    private func setupNotFoundLabel() {
+        view.addSubview(notFoundLabel)
+        NSLayoutConstraint.activate([
             notFoundLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            notFoundLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            
+            notFoundLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+    private func setupLoadingIndicator() {
+        view.addSubview(loadingIndicator)
+        NSLayoutConstraint.activate([
             loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
+
     
     private func setupCollectionView() {
         weatherInfoView.collectionView.dataSource = self
@@ -138,7 +153,7 @@ final class FavoritesDetailsViewController: UIViewController {
         self.weatherInfoView.collectionView.reloadData()
     }
 }
-
+//Mark: CollectionView Datasource + Delegate
 extension FavoritesDetailsViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
@@ -146,7 +161,7 @@ extension FavoritesDetailsViewController: UICollectionViewDataSource, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = items[indexPath.item]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchForecastCell.identifier, for: indexPath) as! SearchForecastCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchForecastCell.identifier, for: indexPath) as? SearchForecastCell else {return UICollectionViewCell()}
         
         if item.icon.starts(with: "http") {
             cell.configure(icon: nil, title: item.title, value: item.value)

@@ -8,9 +8,10 @@
 import UIKit
 
 class FavoritesViewController: UIViewController {
-    
+    //MARK: Properties
     var cities: [String] = []
     var viewModel = FavoritesViewModel()
+    //MARK: UI Components
     private let backgroundImageView: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "background")
@@ -45,6 +46,7 @@ class FavoritesViewController: UIViewController {
         label.isHidden = true
         return label
     }()
+    //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
@@ -58,7 +60,7 @@ class FavoritesViewController: UIViewController {
         super.viewWillAppear(animated)
         loadFavorites()
     }
-
+    //MARK: Setup UI
     private func setupBackground() {
         view.addSubview(backgroundImageView)
         NSLayoutConstraint.activate([
