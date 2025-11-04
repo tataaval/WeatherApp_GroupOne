@@ -51,7 +51,7 @@ class AIAssistantViewModel: AIAssistantViewModelType {
     }
     
     private func appendThinkingMessage() -> Int {
-        let placeholder = ChatItemModel(text: "დავფიქრდები, ან გიპასუხებ, ან ვერა...", isUserMessage: false, isLoading: true)
+        let placeholder = ChatItemModel(text: "Wait a sec let me think...", isUserMessage: false, isLoading: true)
         chatMessages.append(placeholder)
         return chatMessages.count - 1
     }

@@ -97,7 +97,7 @@ final class SearchViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             
-            searchField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            searchField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             searchField.trailingAnchor.constraint(equalTo: searchButton.leadingAnchor, constant: -8),
             searchField.heightAnchor.constraint(equalToConstant: 44),
