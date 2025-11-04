@@ -8,9 +8,11 @@
 import UIKit
 
 final class FavoritesDetailsViewController: UIViewController {
+    var onFavoritesChanged: (() -> Void)?
+    
     // MARK: - Properties
-    var cityName: String = ""
-    private let viewModel = SearchViewModel()
+    private let viewModel: FavoritesDetailsViewModel
+    
     private var items: [(icon: String, title: String, value: String)] = []
     // MARK: - UI Components    
     private let weatherInfoView: WeatherInfoView = {
@@ -39,15 +41,28 @@ final class FavoritesDetailsViewController: UIViewController {
         return indicator
     }()
     
+    // MARK: - Init
+    init(viewModel: FavoritesDetailsViewModel) {
+       self.viewModel = viewModel
+       super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+       fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setBackgroundImage()
         setupUI()
-        setupBindings()
         setupCollectionView()
-        fetchWeatherData()
+        setupBindings()
+        
+        loadingIndicator.startAnimating()
+        viewModel.fetchWeather()
+        viewModel.checkIfFavorite()
     }
     
     // MARK: - Setup Methods
@@ -92,19 +107,24 @@ final class FavoritesDetailsViewController: UIViewController {
     private func setupBindings() {
         viewModel.onWeatherUpdate = { [weak self] weather in
             guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.loadingIndicator.stopAnimating()
-                self.updateUI(with: weather)
-            }
+            self.loadingIndicator.stopAnimating()
+            self.updateUI(with: weather)
         }
         
         viewModel.onError = { [weak self] errorMessage in
             guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.loadingIndicator.stopAnimating()
-                self.weatherInfoView.isHidden = true
-                self.notFoundLabel.isHidden = false
-            }
+            self.loadingIndicator.stopAnimating()
+            self.weatherInfoView.isHidden = true
+            self.notFoundLabel.isHidden = false
+        }
+        
+        weatherInfoView.onBookmarkTapped = { [weak self] name in
+            self?.viewModel.toggleFavorite()
+            self?.onFavoritesChanged?()
+        }
+
+        viewModel.updateFavoriteButton = { [weak self] isFavorite in
+           self?.weatherInfoView.updateBadge(isFavorite: isFavorite)
         }
     }
     
@@ -113,7 +133,7 @@ final class FavoritesDetailsViewController: UIViewController {
         loadingIndicator.startAnimating()
         notFoundLabel.isHidden = true
         weatherInfoView.isHidden = true
-        viewModel.fetchWeather(for: cityName)
+        viewModel.fetchWeather()
     }
     
     // MARK: - UI Update
@@ -133,7 +153,7 @@ final class FavoritesDetailsViewController: UIViewController {
         ]
         
         self.weatherInfoView.isHidden = false
-        self.weatherInfoView.configure(cityName: cityName.capitalized)
+        self.weatherInfoView.configure(cityName: viewModel.cityName.capitalized)
         self.weatherInfoView.collectionView.reloadData()
     }
 }
@@ -159,7 +179,4 @@ extension FavoritesDetailsViewController: UICollectionViewDataSource, UICollecti
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width - 40, height: 60)
     }
-}
-#Preview {
-    FavoritesDetailsViewController()
 }

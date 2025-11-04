@@ -32,4 +32,9 @@ final class SearchViewModel {
         let isFavorite = FavoritesManager.shared.isFavorite(city: city)
         self.updateFavoriteButton?(isFavorite)
     }
+    
+    func checkIfFavorite(_ city: String) {
+        let isFavorite = FavoritesManager.shared.isFavorite(city: city)
+        self.updateFavoriteButton?(isFavorite)
+    }
 }

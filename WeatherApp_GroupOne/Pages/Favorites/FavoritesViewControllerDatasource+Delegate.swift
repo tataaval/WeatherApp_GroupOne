@@ -48,8 +48,11 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedCity = cities[indexPath.section]
-        let favoritesDetailsVC = FavoritesDetailsViewController()
-        favoritesDetailsVC.cityName = selectedCity
+        let favoritesDetailsVM = FavoritesDetailsViewModel(cityName: selectedCity)
+        let favoritesDetailsVC = FavoritesDetailsViewController(viewModel: favoritesDetailsVM)
+        favoritesDetailsVC.onFavoritesChanged = { [weak self] in
+            self?.viewModel.loadFavorites()
+        }
         self.present(favoritesDetailsVC, animated: true)
     }
     

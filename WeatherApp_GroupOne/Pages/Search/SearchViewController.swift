@@ -187,6 +187,9 @@ final class SearchViewController: UIViewController {
             ("gauge", "Pressure", pressure)
         ]
         
+        let cityName = searchField.text?.capitalized ?? ""
+        viewModel.checkIfFavorite(cityName)
+        
         self.weatherInfoView.isHidden = false
         self.weatherInfoView.configure(cityName: searchField.text?.capitalized ?? "")
         self.weatherInfoView.collectionView.reloadData()
