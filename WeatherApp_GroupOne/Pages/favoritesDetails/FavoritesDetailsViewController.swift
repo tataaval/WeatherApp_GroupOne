@@ -4,36 +4,163 @@
 //
 //  Created by Tatarella on 02.11.25.
 //
-
+// 
 import UIKit
 
-class FavoritesDetailsViewController: UIViewController {
+final class FavoritesDetailsViewController: UIViewController {
     
+    // MARK: - Properties
+    var cityName: String = ""
+    private let viewModel = SearchViewModel()
+    private var items: [(icon: String, title: String, value: String)] = []
+    
+    // MARK: - UI Components
     private let backgroundImageView: UIImageView = {
-        let image = UIImageView()
-        image.image = UIImage(named: "background")
-        image.contentMode = .scaleAspectFill
-        image.translatesAutoresizingMaskIntoConstraints = false
-        return image
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "background")
+        imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
-
+    
+    private let weatherInfoView: WeatherInfoView = {
+        let view = WeatherInfoView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        return view
+    }()
+    
+    private let notFoundLabel: UILabel = {
+        let label = UILabel()
+        label.text = "City not found"
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        label.textAlignment = .center
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.color = .white
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBackground()
-        
+        setupUI()
+        setupBindings()
+        setupCollectionView()
+        fetchWeatherData()
     }
-    private func setupBackground() {
+    
+    // MARK: - Setup Methods
+    private func setupUI() {
         view.addSubview(backgroundImageView)
+        view.addSubview(weatherInfoView)
+        view.addSubview(notFoundLabel)
+        view.addSubview(loadingIndicator)
+        
         NSLayoutConstraint.activate([
             backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
-            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            weatherInfoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            weatherInfoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            weatherInfoView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            weatherInfoView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            notFoundLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            notFoundLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
     
+    private func setupCollectionView() {
+        weatherInfoView.collectionView.dataSource = self
+        weatherInfoView.collectionView.delegate = self
+        weatherInfoView.collectionView.register(SearchForecastCell.self, forCellWithReuseIdentifier: SearchForecastCell.identifier)
+    }
+    
+    private func setupBindings() {
+        viewModel.onWeatherUpdate = { [weak self] weather in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.loadingIndicator.stopAnimating()
+                self.updateUI(with: weather)
+            }
+        }
+        
+        viewModel.onError = { [weak self] errorMessage in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.loadingIndicator.stopAnimating()
+                self.weatherInfoView.isHidden = true
+                self.notFoundLabel.isHidden = false
+            }
+        }
+    }
+    
+    // MARK: - Data Methods
+    private func fetchWeatherData() {
+        loadingIndicator.startAnimating()
+        notFoundLabel.isHidden = true
+        weatherInfoView.isHidden = true
+        viewModel.fetchWeather(for: cityName)
+    }
+    
+    // MARK: - UI Update
+    private func updateUI(with weather: WeatherResponse) {
+        self.notFoundLabel.isHidden = true
+        guard let first = weather.weather.first else { return }
+        let temp = "\(Int(weather.main.temp))°C"
+        let humidity = "\(weather.main.humidity)%"
+        let pressure = "\(weather.main.pressure) hPa"
+        let iconURL = "https://openweathermap.org/img/wn/\(first.icon)@2x.png"
+        
+        self.items = [
+            (iconURL, "Condition", first.description.capitalized),
+            ("thermometer", "Temperature", temp),
+            ("drop.fill", "Humidity", humidity),
+            ("gauge", "Pressure", pressure)
+        ]
+        
+        self.weatherInfoView.isHidden = false
+        self.weatherInfoView.configure(cityName: cityName.capitalized)
+        self.weatherInfoView.collectionView.reloadData()
+    }
 }
 
+extension FavoritesDetailsViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return items.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let item = items[indexPath.item]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchForecastCell.identifier, for: indexPath) as! SearchForecastCell
+        
+        if item.icon.starts(with: "http") {
+            cell.configure(icon: nil, title: item.title, value: item.value)
+            cell.loadIcon(from: URL(string: item.icon))
+        } else {
+            cell.configure(icon: UIImage(systemName: item.icon), title: item.title, value: item.value)
+        }
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width - 40, height: 60)
+    }
+}
 #Preview {
     FavoritesDetailsViewController()
 }

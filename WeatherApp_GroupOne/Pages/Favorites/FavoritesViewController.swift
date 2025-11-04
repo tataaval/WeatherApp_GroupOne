@@ -9,8 +9,8 @@ import UIKit
 
 class FavoritesViewController: UIViewController {
     
-    var cities = Location.cityNames
-    
+    var cities: [String] = []
+    var viewModel = FavoritesViewModel()
     private let backgroundImageView: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "background")
@@ -51,6 +51,12 @@ class FavoritesViewController: UIViewController {
         setupHeader()
         setupCollectionView()
         setupEmptyLabel()
+        setupBindings()
+        updateEmptyState()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadFavorites()
     }
 
     private func setupBackground() {
@@ -77,6 +83,23 @@ class FavoritesViewController: UIViewController {
             emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
+    private func updateEmptyState() {
+           let isEmpty = cities.isEmpty
+           collectionView.isHidden = isEmpty
+           emptyLabel.isHidden = !isEmpty
+       }
+    
+    private func setupBindings() {
+          viewModel.onFavoritesUpdate = { [weak self] favorites in
+              guard let self = self else { return }
+              self.cities = favorites
+              self.collectionView.reloadData()
+              self.updateEmptyState()
+          }
+      }
+    private func loadFavorites() {
+            viewModel.loadFavorites()
+        }
     
     private func setupCollectionView() {
         view.addSubview(collectionView)
